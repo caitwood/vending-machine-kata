@@ -14,6 +14,7 @@ public class VendingMachine {
     private NumberFormat formatter = NumberFormat.getCurrencyInstance();
     private List<Coin> coinReturn = new ArrayList<Coin>();
     private Map<Snack, Integer> inventory = new HashMap<Snack, Integer>();
+    private boolean exactChangeOnly;
 
     public VendingMachine(int numberOfColas, int numberOfBagsOfCandy, int numberOfBagsOfChips) {
         inventory.put(Snack.COLA, numberOfColas);
@@ -24,9 +25,9 @@ public class VendingMachine {
     public String getCurrentBalance() {
         if (currentBalance > 0) {
             return formatter.format(currentBalance);
-        }
-
-        return "INSERT COIN";
+        } else if (exactChangeOnly) {
+            return "EXACT CHANGE ONLY";
+        } else return "INSERT COIN";
     }
 
     public void insert(Coin amount) {
@@ -41,7 +42,9 @@ public class VendingMachine {
         if (numberOfSnacksInStock > 0) {
             double change = currentBalance - snack.getCost();
 
-            makeChange(change);
+            if (!exactChangeOnly) {
+                makeChange(change);
+            }
             inventory.put(snack, numberOfSnacksInStock - 1);
             currentBalance = 0.0;
 
@@ -65,5 +68,9 @@ public class VendingMachine {
 
     protected void setInventory(Snack snack, int numberInStock) {
         inventory.put(snack, numberInStock);
+    }
+
+    public void setExactChangeOnly(boolean exactChangeOnly) {
+        this.exactChangeOnly = exactChangeOnly;
     }
 }

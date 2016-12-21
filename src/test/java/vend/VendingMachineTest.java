@@ -115,4 +115,24 @@ public class VendingMachineTest {
         assertThat(vendingMachine.vend(CHIPS), is("SOLD OUT"));
         assertThat(vendingMachine.getCurrentBalance(), is("$0.50"));
     }
+
+    @Test
+    public void shouldReturnExactChangeOnlyMessageIfMakingChangeIsDisabled() {
+        vendingMachine.setExactChangeOnly(true);
+
+        assertThat(vendingMachine.getCurrentBalance(), is("EXACT CHANGE ONLY"));
+    }
+
+    @Test
+    public void shouldNotMakeChangeIfMakingChangeIsDisabled() {
+        vendingMachine.setExactChangeOnly(true);
+
+        vendingMachine.insert(QUARTER);
+        vendingMachine.insert(QUARTER);
+        vendingMachine.insert(QUARTER);
+
+        assertThat(vendingMachine.vend(CHIPS), is("THANK YOU"));
+        assertThat(vendingMachine.getCurrentBalance(), is("EXACT CHANGE ONLY"));
+        assertThat(vendingMachine.getCoinReturnContents(), is(Collections.<Coin>emptyList()));
+    }
 }
