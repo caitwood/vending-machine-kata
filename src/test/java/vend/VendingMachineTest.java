@@ -16,29 +16,29 @@ public class VendingMachineTest {
     }
 
     @Test
-    public void shouldReturnInitialBalanceOfZero() {
-        assertThat(vendingMachine.getCurrentBalance(), is(0.0));
+    public void shouldReturnInsertCoinMessageIfBalanceIsZero() {
+        assertThat(vendingMachine.getCurrentBalance(), is("INSERT COIN"));
     }
 
     @Test
     public void shouldAcceptQuarters() {
         vendingMachine.insert(QUARTER);
 
-        assertThat(vendingMachine.getCurrentBalance(), is(.25));
+        assertThat(vendingMachine.getCurrentBalance(), is("$0.25"));
     }
 
     @Test
     public void shouldAcceptDimes() {
         vendingMachine.insert(DIME);
 
-        assertThat(vendingMachine.getCurrentBalance(), is(.10));
+        assertThat(vendingMachine.getCurrentBalance(), is("$0.10"));
     }
 
     @Test
     public void shouldAcceptNickels() {
         vendingMachine.insert(NICKEL);
 
-        assertThat(vendingMachine.getCurrentBalance(), is(.05));
+        assertThat(vendingMachine.getCurrentBalance(), is("$0.05"));
     }
 
     @Test(expected = RuntimeException.class)

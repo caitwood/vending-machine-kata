@@ -1,13 +1,20 @@
 package vend;
 
+import java.text.NumberFormat;
+
 import static vend.Coin.isValidVendingMachineCoin;
 
 public class VendingMachine {
 
     private double currentBalance = 0.0;
+    private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
-    public double getCurrentBalance() {
-        return currentBalance;
+    public String getCurrentBalance() {
+        if (currentBalance > 0) {
+            return formatter.format(currentBalance);
+        }
+
+        return "INSERT COIN";
     }
 
     public void insert(Coin amount) {
