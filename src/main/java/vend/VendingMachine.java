@@ -38,4 +38,10 @@ public class VendingMachine {
     public List<Coin> getCoinReturnContents() {
         return coinReturn;
     }
+
+    public void returnCoins() {
+        coinReturn.addAll(Coin.convertToCoins(currentBalance));
+
+        currentBalance = 0.0;
+    }
 }

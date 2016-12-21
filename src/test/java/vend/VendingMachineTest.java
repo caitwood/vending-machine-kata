@@ -94,4 +94,13 @@ public class VendingMachineTest {
         assertThat(vendingMachine.getCurrentBalance(), is("INSERT COIN"));
         assertThat(vendingMachine.getCoinReturnContents(), is(Collections.singletonList(DIME)));
     }
+
+    @Test
+    public void shouldReturnCoinsIfReturnInvoked() {
+        vendingMachine.insert(QUARTER);
+        vendingMachine.returnCoins();
+
+        assertThat(vendingMachine.getCurrentBalance(), is("INSERT COIN"));
+        assertThat(vendingMachine.getCoinReturnContents(), is(Collections.singletonList(QUARTER)));
+    }
 }
