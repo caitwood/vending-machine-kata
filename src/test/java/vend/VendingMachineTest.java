@@ -8,13 +8,14 @@ import java.util.Collections;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static vend.Coin.*;
+import static vend.Snack.*;
 
 public class VendingMachineTest {
     private VendingMachine vendingMachine;
 
     @Before
     public void setup() {
-        vendingMachine = new VendingMachine();
+        vendingMachine = new VendingMachine(5, 5, 5);
     }
 
     @Test
@@ -58,7 +59,7 @@ public class VendingMachineTest {
         vendingMachine.insert(DIME);
         vendingMachine.insert(NICKEL);
 
-        assertThat(vendingMachine.vend(Snack.CANDY), is("THANK YOU"));
+        assertThat(vendingMachine.vend(CANDY), is("THANK YOU"));
         assertThat(vendingMachine.getCurrentBalance(), is("INSERT COIN"));
     }
 
@@ -67,7 +68,7 @@ public class VendingMachineTest {
         vendingMachine.insert(QUARTER);
         vendingMachine.insert(QUARTER);
 
-        assertThat(vendingMachine.vend(Snack.CHIPS), is("THANK YOU"));
+        assertThat(vendingMachine.vend(CHIPS), is("THANK YOU"));
         assertThat(vendingMachine.getCurrentBalance(), is("INSERT COIN"));
     }
 
@@ -78,7 +79,7 @@ public class VendingMachineTest {
         vendingMachine.insert(QUARTER);
         vendingMachine.insert(QUARTER);
 
-        assertThat(vendingMachine.vend(Snack.COLA), is("THANK YOU"));
+        assertThat(vendingMachine.vend(COLA), is("THANK YOU"));
         assertThat(vendingMachine.getCurrentBalance(), is("INSERT COIN"));
     }
 
@@ -90,7 +91,7 @@ public class VendingMachineTest {
         vendingMachine.insert(QUARTER);
         vendingMachine.insert(DIME);
 
-        assertThat(vendingMachine.vend(Snack.COLA), is("THANK YOU"));
+        assertThat(vendingMachine.vend(COLA), is("THANK YOU"));
         assertThat(vendingMachine.getCurrentBalance(), is("INSERT COIN"));
         assertThat(vendingMachine.getCoinReturnContents(), is(Collections.singletonList(DIME)));
     }
@@ -102,5 +103,16 @@ public class VendingMachineTest {
 
         assertThat(vendingMachine.getCurrentBalance(), is("INSERT COIN"));
         assertThat(vendingMachine.getCoinReturnContents(), is(Collections.singletonList(QUARTER)));
+    }
+
+    @Test
+    public void shouldReturnSoldOutMessageIfProductIsOutOfStock() {
+        vendingMachine.setInventory(CHIPS, 0);
+
+        vendingMachine.insert(QUARTER);
+        vendingMachine.insert(QUARTER);
+
+        assertThat(vendingMachine.vend(CHIPS), is("SOLD OUT"));
+        assertThat(vendingMachine.getCurrentBalance(), is("$0.50"));
     }
 }
