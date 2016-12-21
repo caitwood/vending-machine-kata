@@ -53,6 +53,5 @@ public class CoinTest {
     @Test
     public void shouldConvertSixtySixCentsToCoins() {
         assertThat(Coin.convertToCoins(.66), is(Arrays.asList(QUARTER, QUARTER, DIME, NICKEL, PENNY)));
-
     }
 }

@@ -25,30 +25,35 @@ public enum Coin {
 
     public static List<Coin> convertToCoins(double value) {
         List<Coin> coins = new ArrayList<Coin>();
+        double currentValue = value;
 
-        int numberOfQuarters = (int)(value / QUARTER.getValue());
-        for (int i = 0; i < numberOfQuarters; i++) {
-            coins.add(QUARTER);
-        }
-        value -= (numberOfQuarters * QUARTER.getValue());
-
-
-        int numberOfDimes = (int)(value / DIME.getValue());
-        for (int i = 0; i < numberOfDimes; i++) {
-            coins.add(DIME);
-        }
-        value -= (numberOfDimes * DIME.getValue());
+        List<Coin> quarters = convertToCoins(QUARTER, currentValue);
+        coins.addAll(quarters);
+        currentValue -= quarters.size() * QUARTER.getValue();
 
 
-        int numberOfNickels = (int)(value / NICKEL.getValue());
-        for (int i = 0; i < numberOfNickels; i++) {
-            coins.add(NICKEL);
-        }
-        value -= (numberOfNickels * NICKEL.getValue());
+        List<Coin> dimes = convertToCoins(DIME, currentValue);
+        coins.addAll(dimes);
+        currentValue -= dimes.size() * DIME.getValue();
 
-        int numberOfPennies = (int)(value / PENNY.getValue());
-        for (int i = 0; i < numberOfPennies; i++) {
-            coins.add(PENNY);
+
+        List<Coin> nickels = convertToCoins(NICKEL, currentValue);
+        coins.addAll(nickels);
+        currentValue -= nickels.size() * NICKEL.getValue();
+
+
+        List<Coin> pennies = convertToCoins(PENNY, currentValue);
+        coins.addAll(pennies);
+
+        return coins;
+    }
+
+    private static List<Coin> convertToCoins(Coin type, double value) {
+        List<Coin> coins = new ArrayList<Coin>();
+
+        int numberOfCoins = (int)(value / type.getValue());
+        for (int i = 0; i < numberOfCoins; i++) {
+            coins.add(type);
         }
 
         return coins;
