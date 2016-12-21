@@ -6,7 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static vend.Coin.convertToCoins;
 import static vend.Coin.isValidVendingMachineCoin;
+import static vend.Snack.*;
 
 public class VendingMachine {
 
@@ -17,9 +19,9 @@ public class VendingMachine {
     private boolean exactChangeOnly;
 
     public VendingMachine(int numberOfColas, int numberOfBagsOfCandy, int numberOfBagsOfChips) {
-        inventory.put(Snack.COLA, numberOfColas);
-        inventory.put(Snack.CANDY, numberOfBagsOfCandy);
-        inventory.put(Snack.CHIPS, numberOfBagsOfChips);
+        setInventory(COLA, numberOfColas);
+        setInventory(CANDY, numberOfBagsOfCandy);
+        setInventory(CHIPS, numberOfBagsOfChips);
     }
 
     public String getCurrentBalance() {
@@ -40,12 +42,12 @@ public class VendingMachine {
         Integer numberOfSnacksInStock = inventory.get(snack);
 
         if (numberOfSnacksInStock > 0) {
-            double change = currentBalance - snack.getCost();
-
             if (!exactChangeOnly) {
+                double change = currentBalance - snack.getCost();
                 makeChange(change);
             }
-            inventory.put(snack, numberOfSnacksInStock - 1);
+
+            setInventory(snack, numberOfSnacksInStock - 1);
             currentBalance = 0.0;
 
             return "THANK YOU";
@@ -63,7 +65,7 @@ public class VendingMachine {
     }
 
     private void makeChange(double change) {
-        coinReturn.addAll(Coin.convertToCoins(change));
+        coinReturn.addAll(convertToCoins(change));
     }
 
     protected void setInventory(Snack snack, int numberInStock) {
