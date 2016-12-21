@@ -1,12 +1,15 @@
 package vend;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import static vend.Coin.isValidVendingMachineCoin;
 
 public class VendingMachine {
 
     private double currentBalance = 0.0;
+    private List<Coin> coinReturn = new ArrayList<Coin>();
     private NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
     public String getCurrentBalance() {
@@ -20,6 +23,19 @@ public class VendingMachine {
     public void insert(Coin amount) {
         if (isValidVendingMachineCoin(amount)) {
             currentBalance += amount.getValue();
-        } else throw new RuntimeException("Invalid coin detected!");
+        } else coinReturn.add(amount);
+    }
+
+    public String vend(Snack snack) {
+        double change = currentBalance - snack.getCost();
+        currentBalance = 0.0;
+
+        coinReturn.addAll(Coin.convertToCoins(change));
+
+        return "THANK YOU";
+    }
+
+    public List<Coin> getCoinReturnContents() {
+        return coinReturn;
     }
 }
